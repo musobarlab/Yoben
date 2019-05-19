@@ -13,4 +13,8 @@ package com.wuriyanto.yoben
 
 fun main(args : Array<String>) {
     println("hello world")
+
+    for (arg in args) {
+        println(arg)
+    }
 }
