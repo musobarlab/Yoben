@@ -1,5 +1,5 @@
 
-### Kotlin template project with Maven
+### Kotlin project template with Maven
 
 #### Test
 ```shell
