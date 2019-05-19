@@ -36,7 +36,7 @@ fun main(args : Array<String>) {
     server.start()
 }
 
-fun shutDown(server: Server): Unit {
+fun shutDown(server: Server) {
     Signal.handle(Signal("INT")) {
         println("app interrupted")
         server.stop()
@@ -50,14 +50,14 @@ fun shutDown(server: Server): Unit {
 
 class Server(private val port: Int) {
 
-    fun start(): Unit {
+    fun start() {
         Spark.port(port)
         Spark.notFound(NotFoundRoute())
 
         Spark.get("/", IndexRoute())
     }
 
-    fun stop(): Unit {
+    fun stop() {
         Spark.stop()
     }
 }
