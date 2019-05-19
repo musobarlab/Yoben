@@ -5,6 +5,14 @@
  */
 package com.wuriyanto.yoben
 
+import io.github.cdimascio.dotenv.Dotenv
+import org.eclipse.jetty.http.HttpStatus
+import spark.Request
+import spark.Response
+import spark.Route
+import spark.Spark
+import sun.misc.Signal
+
 /*
 
   @author wuriyanto
@@ -12,9 +20,61 @@ package com.wuriyanto.yoben
 */
 
 fun main(args : Array<String>) {
-    println("hello world")
 
-    for (arg in args) {
-        println(arg)
+    val env = Dotenv.load()
+
+    var port = 9000
+
+    if (env.get("HTTP_PORT") != null) {
+        port = Integer.parseInt(env.get("HTTP_PORT"))
     }
+
+    val server = Server(port)
+
+    shutDown(server)
+
+    server.start()
+}
+
+fun shutDown(server: Server): Unit {
+    Signal.handle(Signal("INT")) {
+        println("app interrupted")
+        server.stop()
+    }
+
+    Signal.handle(Signal("TERM")) {
+        println("app terminated")
+        server.stop()
+    }
+}
+
+class Server(private val port: Int) {
+
+    fun start(): Unit {
+        Spark.port(port)
+        Spark.notFound(NotFoundRoute())
+
+        Spark.get("/", IndexRoute())
+    }
+
+    fun stop(): Unit {
+        Spark.stop()
+    }
+}
+
+class IndexRoute: Route {
+
+    override fun handle(req: Request?, res: Response?): Any {
+        return "i am up"
+    }
+
+}
+
+class NotFoundRoute: Route {
+
+    override fun handle(req: Request?, res: Response): Any {
+        res.status(HttpStatus.NOT_FOUND_404)
+        return "page not found"
+    }
+
 }
