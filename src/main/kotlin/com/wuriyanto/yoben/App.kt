@@ -7,7 +7,7 @@ package com.wuriyanto.yoben
 
 /*
 
-  @author wurianto
+  @author wuriyanto
   Created on May 19, 2019
 */
 
