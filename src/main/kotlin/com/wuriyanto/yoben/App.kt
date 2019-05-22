@@ -21,8 +21,8 @@ fun main(args : Array<String>) {
 
     var port = 9000
 
-    if (env.get("HTTP_PORT") != null) {
-        port = Integer.parseInt(env.get("HTTP_PORT"))
+    if (env["HTTP_PORT"] != null) {
+        port = Integer.parseInt(env["HTTP_PORT"])
     }
 
     val server = Server(port)
@@ -48,9 +48,9 @@ class Server(private val port: Int) {
 
     fun start() {
         Spark.port(port)
-        Spark.notFound(NotFoundRoute())
+        Spark.notFound(notFoundRoute)
 
-        Spark.get("/", IndexRoute())
+        Spark.get("/", indexRoute)
     }
 
     fun stop() {
