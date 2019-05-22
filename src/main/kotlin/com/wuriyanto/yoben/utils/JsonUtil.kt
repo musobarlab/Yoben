@@ -16,6 +16,4 @@ fun dataToJson(data: Any?): String{
 }
 
 // https://kotlinlang.org/docs/reference/reflection.html
-fun <T> jsonToData(clazz: Class<T>, data: ByteArray): T {
-    return mapper.readValue<T>(data, clazz)
-}
+fun <T> jsonToData(clazz: Class<T>, data: ByteArray): T = mapper.readValue<T>(data, clazz)

@@ -17,20 +17,13 @@ interface IBaseRepository<T, K> {
 
 open class BaseRepositoryInMemory<T, K>(private val db: MutableMap<K, T>): IBaseRepository<T, K> {
 
-    override fun save(t: T): Result<T?, ErrorMessage> {
-        return Ok(t)
-    }
+    override fun save(t: T): Result<T?, ErrorMessage> = Ok(t)
 
-    override fun findById(k: K): Result<T?, ErrorMessage> {
-        return Ok(db[k])
-    }
+    override fun findById(k: K): Result<T?, ErrorMessage> = Ok(db[k])
 
-    override fun delete(k: K): Result<T?, ErrorMessage> {
-        return Ok(db.remove(k))
-    }
+    override fun delete(k: K): Result<T?, ErrorMessage> = Ok(db.remove(k))
 
-    override fun findAll(): Result<List<T>, ErrorMessage> {
-        return Ok(ArrayList(db.values))
-    }
+    override fun findAll(): Result<List<T>, ErrorMessage> = Ok(ArrayList(db.values))
+
 
 }

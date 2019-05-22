@@ -16,9 +16,8 @@ interface IUserRepository: IBaseRepository<User, String> {
 
 class UserRepositoryInMemory(private var db: MutableMap<String, User>): BaseRepositoryInMemory<User, String>(db), IUserRepository {
 
-    override fun save(t: User): Result<User?, ErrorMessage> {
-        return Ok(db.put(t.id, t))
-    }
+    override fun save(t: User): Result<User?, ErrorMessage> = Ok(db.put(t.id, t))
+
 
     override fun findByEmail(email: String): Result<User?, ErrorMessage> =
             Ok(db.values.stream().filter { t -> t.email == email }.findFirst().orElse(null))
