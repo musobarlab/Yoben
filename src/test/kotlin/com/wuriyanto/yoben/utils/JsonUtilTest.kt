@@ -8,9 +8,12 @@ class JsonUtilTest {
 
     @Test fun testDataToJson() {
         var user = User("1", "Alex", "Kok", "alex@yahoo.com", "12345")
-        val json = dataToJson(user)
+        val result = dataToJson(user)
         val expected = """{"id":"1","firstName":"Alex","lastName":"Kok","email":"alex@yahoo.com","password":"12345"}"""
-        assertEquals(expected, json)
+        when(result) {
+            is Ok -> assertEquals(expected, result.value)
+            is Error -> println(result.value)
+        }
     }
 
     @Test fun testJsonToData() {
