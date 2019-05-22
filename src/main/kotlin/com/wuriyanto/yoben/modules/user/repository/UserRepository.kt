@@ -16,13 +16,6 @@ interface IUserRepository: IBaseRepository<User, String> {
 
 class UserRepositoryInMemory(private var db: MutableMap<String, User>): BaseRepositoryInMemory<User, String>(db), IUserRepository {
 
-    init {
-        db = hashMapOf(
-                "1" to User("1", "Alex", "Kok", "alex@yahoo.com", "12345"),
-                "2" to User("2", "Bob", "lee", "bob@yahoo.com", "12345")
-        )
-    }
-
     override fun save(t: User): Result<User?, ErrorMessage> {
         return Ok(db.put(t.id, t))
     }
