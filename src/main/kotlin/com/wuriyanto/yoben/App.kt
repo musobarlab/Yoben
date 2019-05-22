@@ -5,6 +5,10 @@
  */
 package com.wuriyanto.yoben
 
+import com.wuriyanto.yoben.modules.user.delivery.SparkUserHttpHandler
+import com.wuriyanto.yoben.modules.user.domain.User
+import com.wuriyanto.yoben.modules.user.repository.UserRepositoryInMemory
+import com.wuriyanto.yoben.modules.user.usecase.UserUsecase
 import io.github.cdimascio.dotenv.Dotenv
 import spark.Spark
 import sun.misc.Signal
@@ -50,7 +54,20 @@ class Server(private val port: Int) {
         Spark.port(port)
         Spark.notFound(notFoundRoute)
 
+        var inMemoryDb =  hashMapOf(
+                "1" to User("1", "Alex", "Kok", "alex@yahoo.com", "12345"),
+                "2" to User("2", "Bob", "lee", "bob@yahoo.com", "12345")
+        )
+
+        val userRepository = UserRepositoryInMemory(inMemoryDb)
+        val userUsecase = UserUsecase(userRepository)
+        val userSparkHttpHandler = SparkUserHttpHandler(userUsecase)
+
         Spark.get("/", indexRoute)
+        Spark.path("/api") {
+            Spark.before("/*", jsonHeader)
+            Spark.path("/users", userSparkHttpHandler)
+        }
     }
 
     fun stop() {
