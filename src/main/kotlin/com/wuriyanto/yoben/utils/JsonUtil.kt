@@ -1,19 +1,18 @@
 package com.wuriyanto.yoben.utils
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import java.io.IOException
 import java.io.StringWriter
 
 val mapper = jacksonObjectMapper()
 
-fun dataToJson(data: Any?): Result<String, ErrorMessage> {
+fun dataToJson(data: Any?): String{
     var writer = StringWriter()
     try {
         mapper.writeValue(writer, data)
-    } catch (e: IOException) {
-        return Error(ErrorMessage("error parsing object"))
+    } catch (e: Exception) {
+        throw e
     }
-    return Ok(writer.toString())
+    return writer.toString()
 }
 
 // https://kotlinlang.org/docs/reference/reflection.html
