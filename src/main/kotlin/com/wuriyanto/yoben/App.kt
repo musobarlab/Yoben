@@ -12,6 +12,7 @@ import com.wuriyanto.yoben.modules.user.usecase.UserUsecase
 import io.github.cdimascio.dotenv.Dotenv
 import spark.Spark
 import sun.misc.Signal
+import java.time.LocalDateTime
 
 /*
 
@@ -54,9 +55,16 @@ class Server(private val port: Int) {
         Spark.port(port)
         Spark.notFound(notFoundRoute)
 
+        var alex = User("1", "Alex", "Kok", "alex@yahoo.com", "12345")
+        alex.createdAt = LocalDateTime.now()
+        alex.updatedAt = LocalDateTime.now()
+        var bob = User("2", "Bob", "lee", "bob@yahoo.com", "12345")
+        bob.createdAt = LocalDateTime.now()
+        bob.updatedAt = LocalDateTime.now()
+
         var inMemoryDb =  hashMapOf(
-                "1" to User("1", "Alex", "Kok", "alex@yahoo.com", "12345"),
-                "2" to User("2", "Bob", "lee", "bob@yahoo.com", "12345")
+                "1" to alex,
+                "2" to bob
         )
 
         val userRepository = UserRepositoryInMemory(inMemoryDb)
