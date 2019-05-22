@@ -3,15 +3,18 @@ package com.wuriyanto.yoben.modules.user.repository
 import com.wuriyanto.yoben.modules.repository.BaseRepositoryInMemory
 import com.wuriyanto.yoben.modules.repository.IBaseRepository
 import com.wuriyanto.yoben.modules.user.domain.User
+import com.wuriyanto.yoben.utils.ErrorMessage
+import com.wuriyanto.yoben.utils.Ok
+import com.wuriyanto.yoben.utils.Result
 
 
 interface IUserRepository: IBaseRepository<User, String> {
 
-    fun findByEmail(email: String): User?
+    fun findByEmail(email: String): Result<User?, ErrorMessage>
 
 }
 
-class UserRepository(var db: MutableMap<String, User>): BaseRepositoryInMemory<User, String>(db), IUserRepository {
+class UserRepositoryInMemory(private var db: MutableMap<String, User>): BaseRepositoryInMemory<User, String>(db), IUserRepository {
 
     init {
         db = hashMapOf(
@@ -20,12 +23,11 @@ class UserRepository(var db: MutableMap<String, User>): BaseRepositoryInMemory<U
         )
     }
 
-    override fun save(t: User): User? {
-        return db.put(t.id, t)
+    override fun save(t: User): Result<User?, ErrorMessage> {
+        return Ok(db.put(t.id, t))
     }
 
-    override fun findByEmail(email: String): User? {
-        return db.values.find { it.email == email }
-    }
+    override fun findByEmail(email: String): Result<User?, ErrorMessage> =
+            Ok(db.values.stream().filter { t -> t.email == email }.findFirst().orElse(null))
 
 }
