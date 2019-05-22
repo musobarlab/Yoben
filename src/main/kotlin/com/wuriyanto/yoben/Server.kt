@@ -25,10 +25,9 @@ import java.time.LocalDateTime
 
 class Server(private val port: Int) {
 
-    fun start() {
-        Spark.port(port)
-        Spark.notFound(notFoundRoute)
+    private val userSparkHttpHandler: SparkUserHttpHandler
 
+    init {
         var alex = User("1", "Alex", "Kok", "alex@yahoo.com", "12345")
         alex.createdAt = LocalDateTime.now()
         alex.updatedAt = LocalDateTime.now()
@@ -43,7 +42,12 @@ class Server(private val port: Int) {
 
         val userRepository = UserRepositoryInMemory(inMemoryDb)
         val userUsecase = UserUsecase(userRepository)
-        val userSparkHttpHandler = SparkUserHttpHandler(userUsecase)
+        userSparkHttpHandler = SparkUserHttpHandler(userUsecase)
+    }
+
+    fun start() {
+        Spark.port(port)
+        Spark.notFound(notFoundRoute)
 
         Spark.get("/", indexRoute)
         Spark.path("/api") {
