@@ -1,5 +1,5 @@
 
-### Kotlin project template with Maven
+### Kotlin microservice starter kit with Maven
 
 #### Test
 ```shell
