@@ -18,7 +18,6 @@ class UserRepositoryInMemory(private var db: MutableMap<String, User>): BaseRepo
 
     override fun save(t: User): Result<User?, ErrorMessage> = Ok(db.put(t.id, t))
 
-
     override fun findByEmail(email: String): Result<User?, ErrorMessage> =
             Ok(db.values.stream().filter { t -> t.email == email }.findFirst().orElse(null))
 

@@ -26,8 +26,6 @@ class UserUsecase(private val userRepository: IUserRepository): IUserUsecase {
 //        }
     }
 
-    override fun getUsers(): Result<List<User>, ErrorMessage> {
-       return userRepository.findAll()
-    }
+    override fun getUsers(): Result<List<User>, ErrorMessage> = userRepository.findAll()
 
 }
