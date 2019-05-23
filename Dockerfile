@@ -2,7 +2,7 @@
 FROM maven:3.5-jdk-8-alpine as build
 
 ## create workdir
-WORKDIr /app/Yoben/
+WORKDIR /app/Yoben/
 
 ## add current directory to workdir
 ADD . /app/Yoben
