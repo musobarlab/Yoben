@@ -34,9 +34,7 @@ interface IUserUsecase {
 class UserUsecase(private val userRepository: IUserRepository): IUserUsecase {
 
     override fun createUser(user: User): Result<User, ErrorMessage> {
-        if(user.id == "" || user.email == "") {
-            return Error(ErrorMessage("field cannot be empty"))
-        }
+        if(user.id == "" || user.email == "") return Error(ErrorMessage("field cannot be empty"))
 
         user.createdAt = LocalDateTime.now()
         user.updatedAt = LocalDateTime.now()
