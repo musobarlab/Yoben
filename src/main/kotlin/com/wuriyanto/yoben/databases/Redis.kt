@@ -11,7 +11,7 @@ class Redis(private val host: String,
             private val database: Int,
             private val ssl: Boolean){
 
-    lateinit var jedisPool: JedisPool
+    var jedisPool: JedisPool? = null
 
     init {
         val jedisPoolConfig = buildConfig()
