@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  backend:
+    build: .
+    networks:
+      - web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+      - redis
+  mongodb:
+    image: mongo
+    container_name: "mongodb"
+    networks:
+      - web
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGODB_USER="admin"
+      - MONGODB_PASS="admin"
+    volumes:
+      - ./data/mongodb:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    #command: mongod --auth --smallfiles --logpath=/dev/null # using auth
+  redis:
+    image: "redis:3.0-alpine"
+    container_name: "redis"
+    networks:
+      - web
+    command: redis-server --requirepass devpass
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+networks:
+  web:
+    driver: bridge
