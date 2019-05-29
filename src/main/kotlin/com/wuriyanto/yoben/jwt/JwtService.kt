@@ -39,11 +39,11 @@ class JwtService(private val privateKey: Key, private val publicKey: Key): IJwtS
     override fun generate(claim: CustomClaim?): Result<String?, ErrorMessage> {
         if(claim == null) return Error(ErrorMessage("claim cannot be empty"))
 
-        val jwt: String = Jwts.builder().setSubject(claim?.subject)
-                .setIssuer(claim?.issuer)
-                .setAudience(claim?.audience)
-                .setExpiration(claim?.expiration)
-                .setIssuedAt(claim?.issuedAt)
+        val jwt: String = Jwts.builder().setSubject(claim.subject)
+                .setIssuer(claim.issuer)
+                .setAudience(claim.audience)
+                .setExpiration(claim.expiration)
+                .setIssuedAt(claim.issuedAt)
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact()
         return Ok(jwt)
@@ -54,7 +54,7 @@ class JwtService(private val privateKey: Key, private val publicKey: Key): IJwtS
 
         var customClaim: CustomClaim?
 
-        val jwtSplit: List<String> = accessToken?.split(" ")
+        val jwtSplit: List<String> = accessToken.split(" ")
 
         if(jwtSplit.size < 2 || jwtSplit.size > 2) return Error(ErrorMessage("access token is not valid"))
 
